@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Win_Calc.Enums;
 
 namespace Win_Calc
 {
@@ -7,7 +8,7 @@ namespace Win_Calc
     {
         string TrimFirst(string input, char opperator)
         {
-            string[] inputArr = input.Split(new []{ opperator }, StringSplitOptions.RemoveEmptyEntries);
+            string[] inputArr = input.Split(new[] { opperator }, StringSplitOptions.RemoveEmptyEntries);
 
             return inputArr[1];
         } // Substarcts The First Two chars in the String Input. "1+2" => gets only 2
@@ -15,6 +16,7 @@ namespace Win_Calc
         private long value = 0;
         private char operation = '?';
         private bool operationPressed = false;
+        private State currentState = State.Decimal;
 
         public Calculator()
         {
@@ -28,7 +30,7 @@ namespace Win_Calc
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ButtonClickDot(object sender, EventArgs e)
@@ -93,36 +95,48 @@ namespace Win_Calc
 
         private void ButtonClickEqual(object sender, EventArgs e)
         {
-            switch (operation)
+            if (currentState == State.Decimal)
             {
-                case '*':
-                    result.Text = (value * Convert.ToInt64(TrimFirst(result.Text, '*'))).ToString();
-                    break;
-                case '/':
-                    result.Text = (value / Convert.ToInt64(TrimFirst(result.Text, '/'))).ToString();
-                    break;
-                case '+':
-                    result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '+'))).ToString();
-                    break;
-                case '-':
-                    result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '-'))).ToString();
-                    break;
+                switch (operation)
+                {
+                    case '*':
+                        result.Text = (value * Convert.ToInt64(TrimFirst(result.Text, '*'))).ToString();
+                        break;
+                    case '/':
+                        result.Text = (value / Convert.ToInt64(TrimFirst(result.Text, '/'))).ToString();
+                        break;
+                    case '+':
+                        result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '+'))).ToString();
+                        break;
+                    case '-':
+                        result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '-'))).ToString();
+                        break;
+                }
             }
+            else if (currentState == State.Binary)
+            {
+
+            }
+            else if (currentState == State.Hexadecimal)
+            {
+
+            }
+
         }
 
         private void ButtonClickDecimal(object sender, EventArgs e)
         {
-
+            currentState = State.Decimal;
         } //Decimal
 
         private void ButtonClickBinary(object sender, EventArgs e)
         {
-
+            currentState = State.Binary;
         } //Binary
 
         private void ButtonClickHex(object sender, EventArgs e)
         {
-
+            currentState = State.Hexadecimal;
         } //Hex
 
         private void ButtonClickInv(object sender, EventArgs e)
