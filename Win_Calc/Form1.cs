@@ -13,7 +13,7 @@ namespace Win_Calc
         } // Substarcts The First Two chars in the String Input. "1+2" => gets only 2
 
         private long value = 0;
-        private string operation = "?";
+        private char operation = '?';
         private bool operationPressed = false;
 
         public Calculator()
@@ -95,17 +95,17 @@ namespace Win_Calc
         {
             switch (operation)
             {
-                case "*":
-                    result.Text = (value + Convert.ToDouble(result.Text)).ToString();
+                case '*':
+                    result.Text = (value * Convert.ToInt64(TrimFirst(result.Text, '*'))).ToString();
                     break;
-                case "/":
-                    result.Text = (value + Convert.ToDouble(result.Text)).ToString();
+                case '/':
+                    result.Text = (value / Convert.ToInt64(TrimFirst(result.Text, '/'))).ToString();
                     break;
-                case "+":
+                case '+':
                     result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '+'))).ToString();
                     break;
-                case "-":
-                    result.Text = (value + Convert.ToDouble(result.Text)).ToString();
+                case '-':
+                    result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '-'))).ToString();
                     break;
             }
         }
@@ -157,13 +157,27 @@ namespace Win_Calc
 
         private void ButtonClickMultiply(object sender, EventArgs e)
         {
-            operation = "*";
+            if (operationPressed)
+            {
+                result.Clear();
+                operationPressed = false;
+            }
+
+            value = Convert.ToInt64(result.Text);
+            operation = '*';
             result.Text += operation;
         }
 
         private void ButtonClickDivide(object sender, EventArgs e)
         {
-            operation = "/";
+            if (operationPressed)
+            {
+                result.Clear();
+                operationPressed = false;
+            }
+
+            value = Convert.ToInt64(result.Text);
+            operation = '/';
             result.Text += operation;
         }
 
@@ -176,32 +190,39 @@ namespace Win_Calc
             }
 
             value = Convert.ToInt64(result.Text);
-            operation = "+";
+            operation = '+';
             result.Text += operation;
             operationPressed = true;
         }
 
         private void ButtonClickSubstract(object sender, EventArgs e)
         {
-            operation = "-";
+            if (operationPressed)
+            {
+                result.Clear();
+                operationPressed = false;
+            }
+
+            value = Convert.ToInt64(result.Text);
+            operation = '-';
             result.Text += operation;
         }
 
         private void ButtonClickAnd(object sender, EventArgs e)
         {
-            operation = "&";
+            operation = '&';
             result.Text += operation;
         }
 
         private void ButtonClickXor(object sender, EventArgs e)
         {
-            operation = "^";
+            operation = '^';
             result.Text += operation;
         }
 
         private void ButtonClickOr(object sender, EventArgs e)
         {
-            operation = "|";
+            operation = '|';
             result.Text += operation;
         }
 
