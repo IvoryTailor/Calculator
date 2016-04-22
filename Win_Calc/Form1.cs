@@ -5,7 +5,14 @@ namespace Win_Calc
 {
     public partial class Calculator : Form
     {
-        private double value = 0;
+        string TrimFirst(string input, char opperator)
+        {
+            string[] inputArr = input.Split(new []{ opperator }, StringSplitOptions.RemoveEmptyEntries);
+
+            return inputArr[1];
+        } // Substarcts The First Two chars in the String Input. "1+2" => gets only 2
+
+        private long value = 0;
         private string operation = "?";
         private bool operationPressed = false;
 
@@ -34,10 +41,10 @@ namespace Win_Calc
             result.Text = result.Text + "0";
         }
 
-        private void ButtonClickDel(object sender, EventArgs e) //Delete
+        private void ButtonClickDel(object sender, EventArgs e)
         {
             result.Clear();
-        }
+        }  //Delete
 
         private void ButtonClickOne(object sender, EventArgs e)
         {
@@ -88,7 +95,16 @@ namespace Win_Calc
         {
             switch (operation)
             {
+                case "*":
+                    result.Text = (value + Convert.ToDouble(result.Text)).ToString();
+                    break;
+                case "/":
+                    result.Text = (value + Convert.ToDouble(result.Text)).ToString();
+                    break;
                 case "+":
+                    result.Text = (value + Convert.ToInt64(TrimFirst(result.Text, '+'))).ToString();
+                    break;
+                case "-":
                     result.Text = (value + Convert.ToDouble(result.Text)).ToString();
                     break;
             }
@@ -124,10 +140,10 @@ namespace Win_Calc
             result.Text = result.Text + ">>";
         }
 
-        private void ButtonClickMask(object sender, EventArgs e) //Mask
+        private void ButtonClickMask(object sender, EventArgs e)
         {
 
-        }
+        }  //Mask
 
         private void ButtonClickLeft(object sender, EventArgs e)
         {
@@ -159,9 +175,9 @@ namespace Win_Calc
                 operationPressed = false;
             }
 
+            value = Convert.ToInt64(result.Text);
             operation = "+";
             result.Text += operation;
-            value = Convert.ToDouble(result.Text);
             operationPressed = true;
         }
 
